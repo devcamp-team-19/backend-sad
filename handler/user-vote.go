@@ -1,0 +1,28 @@
+package handler
+
+import (
+	"net/http"
+
+	"github.com/devcamp-team-19/backend-sad/core/module"
+	"github.com/gin-gonic/gin"
+)
+
+type UserVoteHandler struct {
+	userVoteUc module.UserVoteUsecase
+}
+
+func NewUserVoteHandler(userVoteUc module.UserVoteUsecase) *UserVoteHandler {
+	return &UserVoteHandler{
+		userVoteUc: userVoteUc,
+	}
+}
+
+func (hdl *UserVoteHandler) VotingReport(c *gin.Context) {
+	err := hdl.userVoteUc.VotingReport(c)
+	if err != nil {
+		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": "voting succesfully created"})
+}
