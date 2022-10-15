@@ -7,6 +7,7 @@ import (
 	"github.com/devcamp-team-19/backend-sad/handler"
 	commentrepository "github.com/devcamp-team-19/backend-sad/repository/comment"
 	userrepository "github.com/devcamp-team-19/backend-sad/repository/user"
+	uservoterepository "github.com/devcamp-team-19/backend-sad/repository/user-vote"
 	"github.com/devcamp-team-19/backend-sad/routes"
 )
 
@@ -23,7 +24,11 @@ func main() {
 	commentUc := module.NewCommentUsecase(commentRepo)
 	commentHdl := handler.NewCommentHandler(commentUc)
 
-	r := routes.SetupRoutes(db, *userHdl, *commentHdl)
+	userVoteRepo := uservoterepository.New()
+	userVoteUc := module.NewUserVoteUsecase(userVoteRepo)
+	userVoteHdl := handler.NewUserVoteHandler(userVoteUc)
+
+	r := routes.SetupRoutes(db, *userHdl, *commentHdl, *userVoteHdl)
 
 	r.Run(":8080")
 }
