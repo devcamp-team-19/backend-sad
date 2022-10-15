@@ -26,3 +26,13 @@ func (hdl *UserVoteHandler) VotingReport(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"status": "voting succesfully updated or created"})
 }
+
+func (hdl *UserVoteHandler) GetVotesInReport(c *gin.Context) {
+	Vote, err := hdl.userVoteUc.GetVotesInReport(c)
+	if err != nil {
+		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": Vote})
+}
