@@ -19,7 +19,7 @@ func NewReport() repository_intf.CommentRepository {
 
 func (r *repositoryComment) Create(c *gin.Context) error {
 	var input entity.CommentInput
-	var userId uint = 2
+	var userId uint = 2 // dummy dulu, nanti isi ini pake jwt auth
 
 	paramsId, err := strconv.ParseInt(c.Params.ByName("reportId"), 32, 32)
 	if err != nil {
