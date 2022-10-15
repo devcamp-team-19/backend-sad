@@ -2,8 +2,10 @@ package userrepository
 
 import (
 	"errors"
+	"log"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 
 	"github.com/devcamp-team-19/backend-sad/core/entity"
@@ -15,6 +17,30 @@ type repositoryUser struct {
 
 func New() repository_intf.UserRepository {
 	return &repositoryUser{}
+}
+
+//func GenerateJWT(email, role string) (string, error) {
+//	var mySigningKey = []byte(secretkey)
+//	token := jwt.New(jwt.SigningMethodHS256)
+//	claims := token.Claims.(jwt.MapClaims)
+//
+//	claims["authorized"] = true
+//	claims["email"] = email
+//	claims["role"] = role
+//	claims["exp"] = time.Now().Add(time.Minute * 30).Unix()
+//
+//	tokenString, err := token.SignedString(mySigningKey)
+//
+//	if err != nil {
+//		fmt.Errorf("Something Went Wrong: %s", err.Error())
+//		return "", err
+//	}
+//	return tokenString, nil
+//}
+
+func GeneratehashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(bytes), err
 }
 
 func (r *repositoryUser) FindAll(c *gin.Context) ([]entity.User, error) {
@@ -70,6 +96,12 @@ func (r *repositoryUser) Create(c *gin.Context) error {
 		Address:  input.Address,
 		Password: input.Password,
 	}
+
+	hashedPass, err := GeneratehashPassword(User.Password)
+	if err != nil {
+		log.Fatalln("error in password hash")
+	}
+	User.Password = hashedPass
 
 	if err := db.Create(&User).Error; err != nil {
 		return errors.New("failed to create user")
