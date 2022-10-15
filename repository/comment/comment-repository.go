@@ -48,3 +48,29 @@ func (r *repositoryComment) Create(c *gin.Context) error {
 
 	return nil
 }
+
+func (r *repositoryComment) FindAll(c *gin.Context) ([]entity.Comment, error) {
+	var comments []entity.Comment
+
+	paramsId, err := strconv.ParseInt(c.Params.ByName("reportId"), 32, 32)
+	if err != nil {
+		return nil, errors.New("failed to convert params")
+	}
+
+	reportId := uint(paramsId)
+
+	db, ok := c.MustGet("db").(*gorm.DB)
+	if !ok {
+		return nil, errors.New("failed to parse db to gorm")
+	}
+
+	db.Raw("SELECT * FROM comments WHERE report_id = ?", reportId).Scan(&comments)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, repository_intf.ErrRecordCommentNotFound
+		}
+		return nil, err
+	}
+
+	return comments, nil
+}

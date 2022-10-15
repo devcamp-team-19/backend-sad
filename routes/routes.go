@@ -28,7 +28,9 @@ func SetupRoutes(db *gorm.DB, userHdl handler.UserHandler, commentHdl handler.Co
 		apiV1.PUT("/users/:id", userHdl.Update)
 		apiV1.POST("/users", userHdl.Create)
 		apiV1.DELETE("/users/:id", userHdl.Delete)
+
 		apiV1.POST("/reports/:reportId", commentHdl.Create)
+		apiV1.GET("/reports/:reportId", commentHdl.GetAll)
 	}
 
 	return r
