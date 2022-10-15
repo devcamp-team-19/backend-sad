@@ -24,6 +24,14 @@ func InitDB() *gorm.DB {
 	password := os.Getenv("password")
 	db, err := gorm.Open(postgres.Open(fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable", host, port, user, dbname, password)), &gorm.Config{})
 
+	sqlDB, _ := db.DB()
+	sqlDB.SetMaxIdleConns(0)
+
+	err = sqlDB.Ping()
+	if err != nil {
+		err = fmt.Errorf("error pinging db: %w", err)
+	}
+
 	if err != nil {
 		log.Fatal(err)
 	}
