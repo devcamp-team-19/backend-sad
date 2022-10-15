@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+  database:
+    image: postgres:13-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=sad-db
+      - POSTGRES_PASSWORD=ZsJPg3pVtHFMXaE
+    volumes:
+      - data:/var/lib/postgresql/data
+    networks:
+      - app-tier
+  minio:
+    image: 'bitnami/minio:latest'
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    environment:
+      - MINIO_ROOT_USER=minio-talent
+      - MINIO_ROOT_PASSWORD=minio-talentstorage-321
+    networks:
+      - app-tier
+  server:
+    build:
+      context: .
+    image:
+      010573/talent:latest
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    networks:
+      - app-tier
+volumes:
+  data:
+networks:
+  app-tier:
+    driver: bridge
