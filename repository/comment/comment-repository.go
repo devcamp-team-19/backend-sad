@@ -48,3 +48,22 @@ func (r *repositoryComment) Create(c *gin.Context) error {
 
 	return nil
 }
+
+func (r *repositoryComment) FindAll(c *gin.Context) ([]entity.Comment, error) {
+	var comments []entity.Comment
+
+	db, ok := c.MustGet("db").(*gorm.DB)
+	if !ok {
+		return nil, errors.New("failed to parse db to gorm")
+	}
+
+	err := db.Model(&entity.Comment{}).Find(&comments).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, repository_intf.ErrRecordCommentNotFound
+		}
+		return nil, err
+	}
+
+	return comments, nil
+}

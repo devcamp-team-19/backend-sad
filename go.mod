@@ -40,7 +40,7 @@ require (
 
 require (
 	github.com/mattn/go-sqlite3 v1.14.15 // indirect
-	golang.org/x/crypto v0.0.0-20221012134737-56aed061732a // indirect
+	golang.org/x/crypto v0.0.0-20221012134737-56aed061732a
 	golang.org/x/text v0.3.8 // indirect
 	gorm.io/driver/postgres v1.4.4
 )
