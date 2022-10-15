@@ -114,7 +114,7 @@ func (r *repositoryUser) Update(c *gin.Context, user entity.User) error {
 		return errors.New("failed to parse db to gorm")
 	}
 
-	if err := db.Where("id = ?", c.Param("id")).Save(&user).Error; err != nil {
+	if err := db.Where("id = ?", c.Param("id")).Updates(&user).Error; err != nil {
 		return errors.New("failed to update user")
 	}
 

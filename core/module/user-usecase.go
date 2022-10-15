@@ -97,7 +97,21 @@ func (em *userUsecase) CreateUser(c *gin.Context, user entity.User) error {
 }
 
 func (em *userUsecase) UpdateUser(c *gin.Context, user entity.User) error {
-	err := em.userRepo.Update(c, user)
+	userByEmail, err := em.userRepo.FindSingleByEmail(c, user.Email)
+	if err != nil {
+		return fmt.Errorf("email not exists")
+	}
+
+	check := CheckPasswordHash(userByEmail.Password, user.Password)
+	if !check {
+		hashedPass, err := GeneratehashPassword(user.Password)
+		if err != nil {
+			return fmt.Errorf("error in password hash")
+		}
+		user.Password = hashedPass
+	}
+
+	err = em.userRepo.Update(c, user)
 	if err != nil {
 		if errors.Is(err, repository.ErrRecordUserNotFound) {
 			return fmt.Errorf("%w.", ErrUserNotFound)
