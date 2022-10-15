@@ -19,13 +19,35 @@ func New() repository_intf.UserVoteRepository {
 }
 
 func (r *repositoryUserVote) GetVotesInReport(c *gin.Context) (entity.Votes, error) {
+	var userVotes []entity.UserVote
 	var downvotes int64 = 0
 	var upvotes int64 = 0
-	// paramsId, err := strconv.ParseInt(c.Params.ByName("reportId"), 32, 32)
-	// if err != nil {
-	// 	return nil, errors.New("failed to convert params")
-	// }
-	// reportId := uint(paramsId)
+	paramsId, err := strconv.ParseInt(c.Params.ByName("reportId"), 32, 32)
+	if err != nil {
+		return entity.Votes{}, errors.New("failed to convert params")
+	}
+	reportId := uint(paramsId)
+
+	db, ok := c.MustGet("db").(*gorm.DB)
+	if !ok {
+		return entity.Votes{}, errors.New("failed to parse db to gorm")
+	}
+
+	db.Raw("SELECT * FROM user_votes WHERE report_id = ?", reportId).Scan(&userVotes)
+
+	if userVotes == nil {
+		return entity.Votes{}, errors.New("user votes not found")
+	}
+
+	for _, vote := range userVotes {
+		if vote.IsUpVote != nil {
+			if *vote.IsUpVote {
+				upvotes += 1
+			} else {
+				downvotes += 1
+			}
+		}
+	}
 
 	var votes = entity.Votes{
 		UpVotes:   upvotes,
