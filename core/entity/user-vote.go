@@ -14,3 +14,8 @@ type UserVote struct {
 type UserVoteInput struct {
 	IsUpVote *bool `json:"isUpVote,omitempty"`
 }
+
+type Votes struct {
+	UpVotes   int64 `json:"upVotes"`
+	DownVotes int64 `json:"downVotes"`
+}
