@@ -14,6 +14,7 @@
 - UUID
 - godotoenv
 - GORM
+- PostgreSQL
 
 ## How to use it
 - clone this repo
