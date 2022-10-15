@@ -18,6 +18,23 @@ func New() repository_intf.UserVoteRepository {
 	return &repositoryUserVote{}
 }
 
+func (r *repositoryUserVote) GetVotesInReport(c *gin.Context) (entity.Votes, error) {
+	var downvotes int64 = 0
+	var upvotes int64 = 0
+	// paramsId, err := strconv.ParseInt(c.Params.ByName("reportId"), 32, 32)
+	// if err != nil {
+	// 	return nil, errors.New("failed to convert params")
+	// }
+	// reportId := uint(paramsId)
+
+	var votes = entity.Votes{
+		UpVotes:   upvotes,
+		DownVotes: downvotes,
+	}
+
+	return votes, nil
+}
+
 func (r *repositoryUserVote) ChooseVotes(c *gin.Context) error {
 	var userId uint = 2 // dummy dulu, nanti isi ini pake jwt
 
