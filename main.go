@@ -17,7 +17,7 @@ func main() {
 	userRepo := productrepository.New()
 	userUc := module.NewUserUsecase(userRepo)
 	userHdl := handler.NewUserHandler(userUc)
-
 	r := routes.SetupRoutes(db, *userHdl)
+
 	r.Run(":8080")
 }
