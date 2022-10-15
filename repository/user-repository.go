@@ -25,7 +25,7 @@ func (r *repository) FindAll(c *gin.Context) ([]entity.User, error) {
 		return nil, errors.New("failed to parse db to gorm")
 	}
 
-	err := db.Model(&entity.User{}).Preload("Variants").Find(&users).Error
+	err := db.Find(&users).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, repository_intf.ErrRecordUserNotFound
@@ -62,7 +62,16 @@ func (r *repository) Create(c *gin.Context) error {
 		return errors.New("failed to parse db to gorm")
 	}
 
-	if err := db.Create(&input).Error; err != nil {
+	// Create User
+	User := entity.User{
+		FullName: input.FullName,
+		NIK:      input.NIK,
+		Email:    input.Email,
+		Address:  input.Address,
+		Password: input.Password,
+	}
+
+	if err := db.Create(&User).Error; err != nil {
 		return errors.New("failed to create user")
 	}
 
@@ -80,7 +89,7 @@ func (r *repository) Update(c *gin.Context) error {
 		return errors.New("failed to parse db to gorm")
 	}
 
-	// Create User
+	// Update User
 	User := entity.User{
 		FullName: input.FullName,
 		NIK:      input.NIK,
