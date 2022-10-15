@@ -18,7 +18,7 @@ type commentUsecase struct {
 	commentRepo repository.CommentRepository
 }
 
-var ErrCommentNotFound = errors.New("user comment: ")
+var ErrCommentNotFound = errors.New("comment error: ")
 
 func NewCommentUsecase(repo repository.CommentRepository) CommentUsecase {
 	return &commentUsecase{repo}

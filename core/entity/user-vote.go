@@ -1,16 +1,16 @@
 package entity
 
 import (
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type UserVote struct {
 	gorm.Model
 	UserID   uint
 	ReportID uint
-	IsUpVote bool `json:"isUpVote"`
+	IsUpVote *bool `json:"isUpVote,omitempty"`
 }
 
 type UserVoteInput struct {
-	IsUpVote bool `json:"isUpVote"`
+	IsUpVote *bool `json:"isUpVote,omitempty"`
 }
