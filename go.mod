@@ -5,10 +5,7 @@ go 1.17
 require (
 	github.com/gin-gonic/gin v1.8.0
 	github.com/golang-jwt/jwt/v4 v4.4.2
-<<<<<<< HEAD
-=======
 	github.com/google/uuid v1.3.0
->>>>>>> 2525ce518c3d722c89c3a081ea450a66be851131
 	github.com/joho/godotenv v1.4.0
 	gorm.io/gorm v1.24.0
 )
