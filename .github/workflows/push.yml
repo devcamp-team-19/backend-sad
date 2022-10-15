@@ -49,6 +49,6 @@ jobs:
           script: |
             cd ~/devcamp-api
             git pull origin dev
-            echo 'NinjaDragon123' | sudo -S docker-compose -f docker-compose.yaml stop
+            echo 'NinjaDragon123' | sudo -S docker-compose -f docker-compose.yml stop
             echo 'NinjaDragon123' | sudo -S docker pull 010573/devcamp:latest
-            echo 'NinjaDragon123' | sudo -S docker-compose -f docker-compose.yaml up -d
+            echo 'NinjaDragon123' | sudo -S docker-compose -f docker-compose.yml up -d

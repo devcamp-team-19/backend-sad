@@ -1,6 +1,11 @@
 package main
 
 import (
+	"fmt"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"os"
 	"testing"
 )
 
@@ -26,19 +31,19 @@ func TestHello(t *testing.T) {
 
 func TestHealth(t *testing.T) {
 
-	//response, err := http.Get(healthURL)
-	//if err != nil {
-	//	log.Fatal(err.Error())
-	//	fmt.Print(err.Error())
-	//	os.Exit(1)
-	//}
-	//
-	//responseData, err := ioutil.ReadAll(response.Body)
-	//if err != nil {
-	//	log.Fatal("Failed to read response body")
-	//}
-	//
-	//if string(responseData) != "ok" {
-	//	log.Fatal("Response health is not equal")
-	//}
+	response, err := http.Get(healthURL)
+	if err != nil {
+		log.Fatal(err.Error())
+		fmt.Print(err.Error())
+		os.Exit(1)
+	}
+
+	responseData, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Fatal("Failed to read response body")
+	}
+
+	if string(responseData) != "ok" {
+		log.Fatal("Response health is not equal")
+	}
 }
