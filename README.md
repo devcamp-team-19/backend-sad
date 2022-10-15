@@ -1,5 +1,5 @@
-# SAD - Scan Area Danger
- Sad Area Danger was created to reduce crime rates and improve security in Indonesia by forming a healthy society.
+# ZoneD - Danger Area Scanner
+ ZoneD was created to reduce crime rates and improve security in Indonesia by forming a healthy society.
 
 ## Tokopedia Devcamp - Team 19
 - Fajar Muhammad Hamka
