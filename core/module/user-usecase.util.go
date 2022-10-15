@@ -11,17 +11,19 @@ import (
 )
 
 var (
-	secretkey       = "asdfasdfasdf"
-	ErrUserNotFound = errors.New("user error: ")
+	secretkey               = "asdfasdfasdf"
+	ErrUserNotFound         = errors.New("user error: ")
+	ErrRecordReportNotFound = errors.New("report error: ")
 )
 
-func GenerateJWT(email string) (string, error) {
+func GenerateJWT(email string, userid uint) (string, error) {
 	var mySigningKey = []byte(secretkey)
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 
 	claims["authorized"] = true
 	claims["email"] = email
+	claims["userid"] = userid
 	claims["exp"] = time.Now().Add(time.Minute * 120).Unix()
 
 	tokenString, err := token.SignedString(mySigningKey)

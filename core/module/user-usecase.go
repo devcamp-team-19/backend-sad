@@ -62,12 +62,13 @@ func (em *userUsecase) Login(c *gin.Context, loginInput entity.LoginInput) (enti
 		return entity.Token{}, fmt.Errorf("username or password is incorrect")
 	}
 
-	validToken, err := GenerateJWT(loginInput.Email)
+	validToken, err := GenerateJWT(loginInput.Email, authUser.ID)
 	if err != nil {
 		return entity.Token{}, fmt.Errorf("invalid token")
 	}
 
 	var token entity.Token
+	token.UserID = authUser.ID
 	token.Email = authUser.Email
 	token.TokenString = validToken
 	return token, nil

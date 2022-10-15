@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 
 	"github.com/devcamp-team-19/backend-sad/core/entity"
 	repository_intf "github.com/devcamp-team-19/backend-sad/core/repository"
@@ -15,18 +16,50 @@ type repository struct {
 }
 
 func (r repository) FindAll(c *gin.Context) ([]entity.Report, error) {
-	//TODO implement me
-	panic("implement me")
+	var reports []entity.Report
+
+	db, ok := c.MustGet("db").(*gorm.DB)
+	if !ok {
+		return nil, errors.New("failed to parse db to gorm")
+	}
+
+	err := db.Find(&reports).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, repository_intf.ErrRecordReportNotFound
+		}
+		return nil, err
+	}
+
+	return reports, nil
 }
 
-func (r repository) FindSingle(c *gin.Context, filename string) (entity.Report, error) {
-	//TODO implement me
-	panic("implement me")
+func (r repository) FindSingle(c *gin.Context, reportID uint) (entity.Report, error) {
+	user := entity.Report{}
+
+	db, ok := c.MustGet("db").(*gorm.DB)
+	if !ok {
+		return entity.Report{}, errors.New("failed to parse db to gorm")
+	}
+
+	if err := db.Where("id = ?", reportID).First(&user).Error; err != nil {
+		return entity.Report{}, repository_intf.ErrRecordUserNotFound
+	}
+
+	return user, nil
 }
 
-func (r repository) Create(c *gin.Context, report *entity.Report) (entity.Report, error) {
-	//TODO implement me
-	panic("implement me")
+func (r repository) Create(c *gin.Context, report entity.Report) (entity.Report, error) {
+	db, ok := c.MustGet("db").(*gorm.DB)
+	if !ok {
+		return entity.Report{}, errors.New("failed to parse db to gorm")
+	}
+
+	if err := db.Create(&report).Error; err != nil {
+		return entity.Report{}, errors.New("failed to create report")
+	}
+
+	return report, nil
 }
 
 func (r repository) Delete(c *gin.Context, filename string) error {

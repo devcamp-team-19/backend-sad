@@ -77,7 +77,7 @@ func (hdl *UserHandler) Register(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"status": "user succesfully created"})
+	c.JSON(http.StatusOK, gin.H{"status": "user successfully created"})
 }
 
 func (hdl *UserHandler) Update(c *gin.Context) {
@@ -102,7 +102,7 @@ func (hdl *UserHandler) Update(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"status": "user succesfully updated"})
+	c.JSON(http.StatusOK, gin.H{"status": "user successfully updated"})
 }
 func (hdl *UserHandler) Delete(c *gin.Context) {
 	err := hdl.userUc.DeleteUser(c)
@@ -111,5 +111,5 @@ func (hdl *UserHandler) Delete(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"status": "user succesfully deleted"})
+	c.JSON(http.StatusOK, gin.H{"status": "user successfully deleted"})
 }

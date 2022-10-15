@@ -17,7 +17,9 @@ func SetupRoutes(
 	userHdl handler.UserHandler,
 	commentHdl handler.CommentHandler,
 	fileHdl handler.FileHandler,
-	userVoteHdl handler.UserVoteHandler) *gin.Engine {
+	userVoteHdl handler.UserVoteHandler,
+	reportHdl handler.ReportHandler) *gin.Engine {
+
 	r := gin.Default()
 	r.Use(func(c *gin.Context) {
 		c.Set("db", db)
@@ -50,15 +52,19 @@ func SetupRoutes(
 		file.StaticFS("/static", http.Dir("images"))
 
 		// Comment routes
-		comments := apiV1.Group("/comments")
-		comments.Use(module.IsAuthorized())
-		comments.POST("/:reportId", commentHdl.Create)
-		comments.GET("/:reportId", commentHdl.GetAll)
+		comment := apiV1.Group("/comments")
+		comment.Use(module.IsAuthorized())
+		comment.POST("/:reportId", commentHdl.Create)
+		comment.GET("/:reportId", commentHdl.GetAll)
 
-		// UserVote routes
-		reports := apiV1.Group("/reports")
-		reports.POST("/:reportId/votes", userVoteHdl.VotingReport)
-		reports.GET("/:reportId/votes", userVoteHdl.GetVotesInReport)
+		// Report routes
+		report := apiV1.Group("/reports")
+		report.Use(module.IsAuthorized())
+		report.POST("/:reportId/votes", userVoteHdl.VotingReport)
+		report.GET("/:reportId/votes", userVoteHdl.GetVotesInReport)
+		report.GET("/:reportId", reportHdl.GetReport)
+		report.GET("", reportHdl.GetReports)
+		report.POST("", reportHdl.CreateReport)
 	}
 
 	return r

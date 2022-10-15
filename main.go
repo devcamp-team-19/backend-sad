@@ -29,13 +29,15 @@ func main() {
 	commentUc := module.NewCommentUsecase(commentRepo)
 	userVoteUc := module.NewUserVoteUsecase(userVoteRepo)
 	fileUc := module.NewFileUseCase(fileRepo, reportRepo)
+	reportUc := module.NewReportUseCase(reportRepo)
 
 	userHdl := handler.NewUserHandler(userUc)
 	commentHdl := handler.NewCommentHandler(commentUc)
 	userVoteHdl := handler.NewUserVoteHandler(userVoteUc)
 	fileHdl := handler.NewFileHandler(fileUc)
+	reportHdl := handler.NewReportHandler(reportUc)
 
-	r := routes.SetupRoutes(db, cfg, *userHdl, *commentHdl, *fileHdl, *userVoteHdl)
+	r := routes.SetupRoutes(db, cfg, *userHdl, *commentHdl, *fileHdl, *userVoteHdl, *reportHdl)
 
 	r.Run(":8080")
 }

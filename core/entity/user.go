@@ -31,5 +31,6 @@ type LoginInput struct {
 
 type Token struct {
 	Email       string `json:"email"`
+	UserID      uint   `json:"userID"`
 	TokenString string `json:"token"`
 }
