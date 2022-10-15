@@ -11,7 +11,13 @@ import (
 	"github.com/devcamp-team-19/backend-sad/handler"
 )
 
-func SetupRoutes(db *gorm.DB, cfg config.Config, userHdl handler.UserHandler, commentHdl handler.CommentHandler, fileHdl handler.FileHandler) *gin.Engine {
+func SetupRoutes(
+	db *gorm.DB,
+	cfg config.Config,
+	userHdl handler.UserHandler,
+	commentHdl handler.CommentHandler,
+	fileHdl handler.FileHandler,
+	userVoteHdl handler.UserVoteHandler) *gin.Engine {
 	r := gin.Default()
 	r.Use(func(c *gin.Context) {
 		c.Set("db", db)
@@ -43,8 +49,16 @@ func SetupRoutes(db *gorm.DB, cfg config.Config, userHdl handler.UserHandler, co
 		file.POST("", fileHdl.UploadFile)
 		file.StaticFS("/static", http.Dir("images"))
 
-		apiV1.POST("/reports/:reportId", commentHdl.Create)
-		apiV1.GET("/reports/:reportId", commentHdl.GetAll)
+		// Comment routes
+		comments := apiV1.Group("/comments")
+		comments.Use(module.IsAuthorized())
+		comments.POST("/:reportId", commentHdl.Create)
+		comments.GET("/:reportId", commentHdl.GetAll)
+
+		// UserVote routes
+		reports := apiV1.Group("/reports")
+		reports.POST("/:reportId/votes", userVoteHdl.VotingReport)
+		reports.GET("/:reportId/votes", userVoteHdl.GetVotesInReport)
 	}
 
 	return r

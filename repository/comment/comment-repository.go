@@ -17,9 +17,10 @@ func New() repository_intf.CommentRepository {
 	return &repositoryComment{}
 }
 
+// TODO: belom pake auth
 func (r *repositoryComment) Create(c *gin.Context) error {
 	var input entity.CommentInput
-	var userId uint = 2 // dummy dulu, nanti isi ini pake jwt
+	var userId uint = 2 // TODO: dummy dulu, nanti isi ini pake jwt
 
 	paramsId, err := strconv.ParseInt(c.Params.ByName("reportId"), 32, 32)
 	if err != nil {
@@ -36,19 +37,20 @@ func (r *repositoryComment) Create(c *gin.Context) error {
 		return errors.New("failed to parse db to gorm")
 	}
 
-	Comment := entity.Comment{
+	comment := entity.Comment{
 		UserID:      userId,
 		ReportID:    reportId,
 		Description: input.Description,
 	}
 
-	if err := db.Create(&Comment).Error; err != nil {
+	if err := db.Create(&comment).Error; err != nil {
 		return errors.New("failed to create comment")
 	}
 
 	return nil
 }
 
+// TODO: belom pake auth
 func (r *repositoryComment) FindAll(c *gin.Context) ([]entity.Comment, error) {
 	var comments []entity.Comment
 
@@ -65,12 +67,8 @@ func (r *repositoryComment) FindAll(c *gin.Context) ([]entity.Comment, error) {
 	}
 
 	db.Raw("SELECT * FROM comments WHERE report_id = ?", reportId).Scan(&comments)
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, repository_intf.ErrRecordCommentNotFound
-		}
-		return nil, err
+	if comments == nil {
+		return nil, errors.New("comments not found")
 	}
-
 	return comments, nil
 }

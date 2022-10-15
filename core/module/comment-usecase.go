@@ -18,7 +18,7 @@ type commentUsecase struct {
 	commentRepo repository.CommentRepository
 }
 
-var ErrCommentNotFound = errors.New("user comment: ")
+var ErrCommentNotFound = errors.New("comment error: ")
 
 func NewCommentUsecase(repo repository.CommentRepository) CommentUsecase {
 	return &commentUsecase{repo}
@@ -27,7 +27,7 @@ func NewCommentUsecase(repo repository.CommentRepository) CommentUsecase {
 func (em *commentUsecase) CreateComment(c *gin.Context) error {
 	err := em.commentRepo.Create(c)
 	if err != nil {
-		return fmt.Errorf("%w: %v", ErrUserNotFound, err)
+		return fmt.Errorf("%w: %v", ErrCommentNotFound, err)
 	}
 	return nil
 }
@@ -35,7 +35,7 @@ func (em *commentUsecase) CreateComment(c *gin.Context) error {
 func (em *commentUsecase) GetComments(c *gin.Context) ([]entity.Comment, error) {
 	data, err := em.commentRepo.FindAll(c)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %v", ErrUserNotFound, err)
+		return nil, fmt.Errorf("%w: %v", ErrCommentNotFound, err)
 	}
 
 	return data, nil
