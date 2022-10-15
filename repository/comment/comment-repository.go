@@ -1,4 +1,4 @@
-package repository
+package commentrepository
 
 import (
 	"errors"
@@ -13,13 +13,13 @@ import (
 type repositoryComment struct {
 }
 
-func NewReport() repository_intf.CommentRepository {
-	return &repository{}
+func New() repository_intf.CommentRepository {
+	return &repositoryComment{}
 }
 
 func (r *repositoryComment) Create(c *gin.Context) error {
 	var input entity.CommentInput
-	var userId uint = 2 // dummy dulu, nanti isi ini pake jwt auth
+	var userId uint = 2 // dummy dulu, nanti isi ini pake jwt
 
 	paramsId, err := strconv.ParseInt(c.Params.ByName("reportId"), 32, 32)
 	if err != nil {

@@ -1,4 +1,4 @@
-package repository
+package userrepository
 
 import (
 	"errors"
@@ -10,14 +10,14 @@ import (
 	repository_intf "github.com/devcamp-team-19/backend-sad/core/repository"
 )
 
-type repository struct {
+type repositoryUser struct {
 }
 
 func New() repository_intf.UserRepository {
-	return &repository{}
+	return &repositoryUser{}
 }
 
-func (r *repository) FindAll(c *gin.Context) ([]entity.User, error) {
+func (r *repositoryUser) FindAll(c *gin.Context) ([]entity.User, error) {
 	var users []entity.User
 
 	db, ok := c.MustGet("db").(*gorm.DB)
@@ -36,7 +36,7 @@ func (r *repository) FindAll(c *gin.Context) ([]entity.User, error) {
 	return users, nil
 }
 
-func (r *repository) FindSingle(c *gin.Context) (entity.User, error) {
+func (r *repositoryUser) FindSingle(c *gin.Context) (entity.User, error) {
 	user := entity.User{}
 
 	db, ok := c.MustGet("db").(*gorm.DB)
@@ -51,7 +51,7 @@ func (r *repository) FindSingle(c *gin.Context) (entity.User, error) {
 	return user, nil
 }
 
-func (r *repository) Create(c *gin.Context) error {
+func (r *repositoryUser) Create(c *gin.Context) error {
 	var input entity.UserInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 		return errors.New("failed to create user")
@@ -69,7 +69,7 @@ func (r *repository) Create(c *gin.Context) error {
 	return nil
 }
 
-func (r *repository) Update(c *gin.Context) error {
+func (r *repositoryUser) Update(c *gin.Context) error {
 	var input entity.UserInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 		return errors.New("failed to update user")
@@ -96,7 +96,7 @@ func (r *repository) Update(c *gin.Context) error {
 	return nil
 }
 
-func (r *repository) Delete(c *gin.Context) error {
+func (r *repositoryUser) Delete(c *gin.Context) error {
 	db, ok := c.MustGet("db").(*gorm.DB)
 	if !ok {
 		return errors.New("failed to parse db to gorm")
