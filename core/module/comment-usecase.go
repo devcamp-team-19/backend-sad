@@ -11,6 +11,7 @@ import (
 
 type CommentUsecase interface {
 	CreateComment(c *gin.Context) error
+	GetComments(c *gin.Context) ([]entity.Comment, error)
 }
 
 type commentUsecase struct {
