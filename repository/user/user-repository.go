@@ -57,20 +57,20 @@ func GeneratehashPassword(password string) (string, error) {
 	return string(bytes), err
 }
 
-//compare plain password with hash password
+// compare plain password with hash password
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
 }
 
-//set error message in Error struct
+// set error message in Error struct
 func SetError(err Error, message string) Error {
 	err.IsError = true
 	err.Message = message
 	return err
 }
 
-//check whether user is authorized or not
+// check whether user is authorized or not
 func IsAuthorized(handler http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
