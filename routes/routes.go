@@ -37,6 +37,7 @@ func SetupRoutes(
 		apiV1.GET("/reports/:reportId", commentHdl.GetAll)
 
 		apiV1.POST("/reports/:reportId/votes", userVoteHdl.VotingReport)
+		apiV1.GET("/reports/:reportId/votes", userVoteHdl.GetVotesInReport)
 	}
 
 	return r
