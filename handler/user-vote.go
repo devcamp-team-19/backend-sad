@@ -24,5 +24,5 @@ func (hdl *UserVoteHandler) VotingReport(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"status": "voting succesfully created"})
+	c.JSON(http.StatusOK, gin.H{"status": "voting succesfully updated or created"})
 }

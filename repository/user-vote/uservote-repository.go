@@ -2,7 +2,6 @@ package uservoterepository
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"strconv"
 
@@ -56,17 +55,25 @@ func (r *repositoryUserVote) ChooseVotes(c *gin.Context) error {
 	} else {
 		// nil to isVoting
 		if userVote.IsUpVote == nil {
-			fmt.Println("Hello")
 			if !isVoting {
-				db.Raw(` 
+				err := db.Raw(` 
 				UPDATE user_votes
 				SET is_up_vote = FALSE
-				WHERE user_id = ?;`, userId).Scan(&userVote)
+				WHERE user_id = ?;`, userId).Scan(&userVote).Error
+
+				if err != nil {
+					return errors.New("failed to convert nil to isVoting")
+				}
+
 			} else {
-				db.Raw(` 
+				err := db.Raw(` 
 				UPDATE user_votes
 				SET is_up_vote = TRUE
-				WHERE user_id = ?;`, userId).Scan(&userVote)
+				WHERE user_id = ?;`, userId).Scan(&userVote).Error
+
+				if err != nil {
+					return errors.New("failed to convert nil to isVoting")
+				}
 			}
 		} else {
 			if *userVote.IsUpVote && isVoting {
