@@ -11,9 +11,9 @@ type User struct {
 	Comments  []Comment  `json:"comments"`
 	FullName  string     `json:"fullName"`
 	NIK       string     `json:"nik"`
-	email     string     `json:"email"`
-	address   string     `json:"address"`
-	password  string     `json:"password"`
+	Email     string     `json:"email"`
+	Address   string     `json:"address"`
+	Password  string     `json:"password"`
 }
 
 type UserInput struct {
@@ -22,7 +22,7 @@ type UserInput struct {
 	Comments  []CommentInput  `json:"comments"`
 	FullName  string          `json:"fullName"`
 	NIK       string          `json:"nik"`
-	email     string          `json:"email"`
-	address   string          `json:"address"`
-	password  string          `json:"password"`
+	Email     string          `json:"email"`
+	Address   string          `json:"address"`
+	Password  string          `json:"password"`
 }

@@ -13,9 +13,9 @@ type Report struct {
 	Category    uint    `json:"category"`
 	ImageUrl    string  `json:"imageUrl"`
 	Description string  `json:"description"`
-	Longitude   string  `json"longitude"`
+	Longitude   string  `json:"longitude"`
 	Latitude    string  `json:"latitude"`
-	radius      float64 `json:"radius"`
+	Radius      float64 `json:"radius"`
 }
 
 type ReportInput struct {
@@ -25,7 +25,7 @@ type ReportInput struct {
 	Category    uint            `json:"category"`
 	ImageUrl    string          `json:"imageUrl"`
 	Description string          `json:"description"`
-	Longitude   string          `json"longitude"`
+	Longitude   string          `json:"longitude"`
 	Latitude    string          `json:"latitude"`
-	radius      float64         `json:"radius"`
+	Radius      float64         `json:"radius"`
 }

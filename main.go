@@ -12,7 +12,7 @@ import (
 func main() {
 
 	db := config.Init()
-	db.AutoMigrate(&entity.User{})
+	db.AutoMigrate(&entity.User{}, &entity.Report{}, &entity.UserVote{}, &entity.Comment{})
 
 	userRepo := productrepository.New()
 	userUc := module.NewUserUsecase(userRepo)
