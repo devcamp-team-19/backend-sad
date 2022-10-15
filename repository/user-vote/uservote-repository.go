@@ -19,7 +19,6 @@ func New() repository_intf.UserVoteRepository {
 	return &repositoryUserVote{}
 }
 
-// TODO: belom pake auth
 func (r *repositoryUserVote) GetVotesInReport(c *gin.Context) (entity.Votes, error) {
 	var userVotes []entity.UserVote
 	var downvotes int64 = 0
@@ -59,9 +58,16 @@ func (r *repositoryUserVote) GetVotesInReport(c *gin.Context) (entity.Votes, err
 	return votes, nil
 }
 
-// TODO: belom pake auth
 func (r *repositoryUserVote) ChooseVotes(c *gin.Context) error {
-	var userId uint = 1 // TODO: dummy dulu, nanti isi ini pake jwt
+	userIdHeader := c.Request.Header["User-Id"]
+	if len(userIdHeader) == 0 {
+		return errors.New("failed to parse userID")
+	}
+
+	userId, err := strconv.ParseUint(userIdHeader[0], 10, 32)
+	if err != nil {
+		return errors.New("failed to parse userID")
+	}
 
 	query := c.Query("isVoting")
 	isVoting, err := strconv.ParseBool(query)
@@ -87,7 +93,7 @@ func (r *repositoryUserVote) ChooseVotes(c *gin.Context) error {
 	// when user never vote the report that we addresed
 	if errors.Is(dbRresult.Error, gorm.ErrRecordNotFound) {
 		vote := entity.UserVote{
-			UserID:   userId,
+			UserID:   uint(userId),
 			ReportID: reportId,
 			IsUpVote: &isVoting,
 		}

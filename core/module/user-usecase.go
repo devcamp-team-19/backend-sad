@@ -40,7 +40,7 @@ func (em *userUsecase) GetUsers(c *gin.Context) ([]entity.User, error) {
 }
 
 func (em *userUsecase) GetUser(c *gin.Context) (entity.User, error) {
-	data, err := em.userRepo.FindSingle(c)
+	data, err := em.userRepo.FindSingle(c, 1)
 	if err != nil {
 		if errors.Is(err, repository.ErrRecordUserNotFound) {
 			return entity.User{}, fmt.Errorf("%w.", ErrUserNotFound)

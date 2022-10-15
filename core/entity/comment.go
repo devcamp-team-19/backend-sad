@@ -6,6 +6,14 @@ import (
 
 type Comment struct {
 	gorm.Model
+	FullName    string
+	UserID      uint
+	ReportID    uint
+	Description string `json:"description"`
+}
+
+type CommentResp struct {
+	gorm.Model
 	UserID      uint
 	ReportID    uint
 	Description string `json:"description"`

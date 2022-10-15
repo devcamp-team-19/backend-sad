@@ -20,11 +20,13 @@ type ReportUsecase interface {
 
 type reportUsecase struct {
 	reportRepo repository.ReportRepository
+	userRepo   repository.UserRepository
 }
 
-func NewReportUseCase(reportrepo repository.ReportRepository) ReportUsecase {
+func NewReportUseCase(reportrepo repository.ReportRepository, userrepo repository.UserRepository) ReportUsecase {
 	return &reportUsecase{
 		reportrepo,
+		userrepo,
 	}
 }
 
@@ -47,6 +49,7 @@ func (r reportUsecase) GetReport(c *gin.Context, reportId uint) (entity.Report, 
 		}
 		return entity.Report{}, fmt.Errorf("%w: %v", ErrRecordReportNotFound, err)
 	}
+
 	return data, nil
 }
 

@@ -26,8 +26,13 @@ func (hdl *ReportHandler) CreateReport(c *gin.Context) {
 		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
 		return
 	}
+	userIdHeader := c.Request.Header["User-Id"]
+	if len(userIdHeader) == 0 {
+		c.AbortWithStatusJSON(500, gin.H{"message": "userID not found in the header!"})
+		return
+	}
 
-	userID, err := strconv.ParseUint(c.Request.Header["User-Id"][0], 10, 32)
+	userID, err := strconv.ParseUint(userIdHeader[0], 10, 32)
 	if err != nil {
 		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
 		return

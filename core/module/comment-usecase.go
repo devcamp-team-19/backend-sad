@@ -3,10 +3,12 @@ package module
 import (
 	"errors"
 	"fmt"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
 
 	"github.com/devcamp-team-19/backend-sad/core/entity"
 	"github.com/devcamp-team-19/backend-sad/core/repository"
-	"github.com/gin-gonic/gin"
 )
 
 type CommentUsecase interface {
@@ -16,16 +18,32 @@ type CommentUsecase interface {
 
 type commentUsecase struct {
 	commentRepo repository.CommentRepository
+	userRepo    repository.UserRepository
 }
 
 var ErrCommentNotFound = errors.New("comment error: ")
 
-func NewCommentUsecase(repo repository.CommentRepository) CommentUsecase {
-	return &commentUsecase{repo}
+func NewCommentUsecase(repo repository.CommentRepository, userrepo repository.UserRepository) CommentUsecase {
+	return &commentUsecase{repo, userrepo}
 }
 
 func (em *commentUsecase) CreateComment(c *gin.Context) error {
-	err := em.commentRepo.Create(c)
+	userIdHeader := c.Request.Header["User-Id"]
+	if len(userIdHeader) == 0 {
+		return errors.New("failed to parse userID")
+	}
+
+	userID, err := strconv.ParseUint(userIdHeader[0], 10, 32)
+	if err != nil {
+		return errors.New("failed to parse userID")
+	}
+
+	user, err := em.userRepo.FindSingle(c, uint(userID))
+	if err != nil {
+		return fmt.Errorf("%w: %v", ErrUserNotFound, err)
+	}
+
+	err = em.commentRepo.Create(c, uint(userID), user.FullName)
 	if err != nil {
 		return fmt.Errorf("%w: %v", ErrCommentNotFound, err)
 	}

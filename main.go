@@ -26,10 +26,10 @@ func main() {
 	userVoteRepo := uservoterepository.New()
 
 	userUc := module.NewUserUsecase(userRepo)
-	commentUc := module.NewCommentUsecase(commentRepo)
+	commentUc := module.NewCommentUsecase(commentRepo, userRepo)
 	userVoteUc := module.NewUserVoteUsecase(userVoteRepo)
 	fileUc := module.NewFileUseCase(fileRepo, reportRepo)
-	reportUc := module.NewReportUseCase(reportRepo)
+	reportUc := module.NewReportUseCase(reportRepo, userRepo)
 
 	userHdl := handler.NewUserHandler(userUc)
 	commentHdl := handler.NewCommentHandler(commentUc)

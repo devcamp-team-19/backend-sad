@@ -18,10 +18,8 @@ func New() repository_intf.CommentRepository {
 	return &repositoryComment{}
 }
 
-// TODO: belom pake auth
-func (r *repositoryComment) Create(c *gin.Context) error {
+func (r *repositoryComment) Create(c *gin.Context, userID uint, fullname string) error {
 	var input entity.CommentInput
-	var userId uint = 1 // TODO: dummy dulu, nanti isi ini pake jwt
 
 	paramsId, err := strconv.ParseInt(c.Params.ByName("reportId"), 32, 32)
 	if err != nil {
@@ -39,7 +37,8 @@ func (r *repositoryComment) Create(c *gin.Context) error {
 	}
 
 	comment := entity.Comment{
-		UserID:      userId,
+		UserID:      userID,
+		FullName:    fullname,
 		ReportID:    reportId,
 		Description: input.Description,
 	}
@@ -51,7 +50,6 @@ func (r *repositoryComment) Create(c *gin.Context) error {
 	return nil
 }
 
-// TODO: belom pake auth
 func (r *repositoryComment) FindAll(c *gin.Context) ([]entity.Comment, error) {
 	var comments []entity.Comment
 
