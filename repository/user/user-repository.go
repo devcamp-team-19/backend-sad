@@ -52,6 +52,21 @@ func (r *repositoryUser) FindSingle(c *gin.Context) (entity.User, error) {
 	return user, nil
 }
 
+func (r *repositoryUser) FindSingleByEmail(c *gin.Context, email string) (entity.User, error) {
+	user := entity.User{}
+
+	db, ok := c.MustGet("db").(*gorm.DB)
+	if !ok {
+		return entity.User{}, errors.New("failed to parse db to gorm")
+	}
+
+	if err := db.Where("email = ?", email).First(&user).Error; err != nil {
+		return entity.User{}, repository_intf.ErrRecordUserNotFound
+	}
+
+	return user, nil
+}
+
 func (r *repositoryUser) Create(c *gin.Context, user entity.User) error {
 	db, ok := c.MustGet("db").(*gorm.DB)
 	if !ok {

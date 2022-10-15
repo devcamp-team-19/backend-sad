@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 
+	"github.com/devcamp-team-19/backend-sad/core/module"
 	"github.com/devcamp-team-19/backend-sad/handler"
 )
 
@@ -23,11 +24,15 @@ func SetupRoutes(db *gorm.DB, userHdl handler.UserHandler, commentHdl handler.Co
 
 	apiV1 := r.Group("/api/v1")
 	{
-		apiV1.GET("/users", userHdl.GetAll)
-		apiV1.GET("/users/:id", userHdl.GetSingle)
-		apiV1.PUT("/users/:id", userHdl.Update)
-		apiV1.POST("/users", userHdl.Create)
-		apiV1.DELETE("/users/:id", userHdl.Delete)
+		apiV1.POST("/login", userHdl.Login)
+		apiV1.POST("/register", userHdl.Register)
+
+		user := apiV1
+		user.Use(module.IsAuthorized())
+		user.GET("/users", userHdl.GetAll)
+		user.GET("/users/:id", userHdl.GetSingle)
+		user.PUT("/users/:id", userHdl.Update)
+		user.DELETE("/users/:id", userHdl.Delete)
 
 		apiV1.POST("/reports/:reportId", commentHdl.Create)
 		apiV1.GET("/reports/:reportId", commentHdl.GetAll)

@@ -10,17 +10,17 @@ import (
 )
 
 type UserHandler struct {
-	productUc module.UserUsecase
+	userUc module.UserUsecase
 }
 
-func NewUserHandler(productUc module.UserUsecase) *UserHandler {
+func NewUserHandler(userUc module.UserUsecase) *UserHandler {
 	return &UserHandler{
-		productUc: productUc,
+		userUc: userUc,
 	}
 }
 
 func (hdl *UserHandler) GetAll(c *gin.Context) {
-	Users, err := hdl.productUc.GetUsers(c)
+	Users, err := hdl.userUc.GetUsers(c)
 	if err != nil {
 		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
 		return
@@ -30,7 +30,7 @@ func (hdl *UserHandler) GetAll(c *gin.Context) {
 }
 
 func (hdl *UserHandler) GetSingle(c *gin.Context) {
-	User, err := hdl.productUc.GetUser(c)
+	User, err := hdl.userUc.GetUser(c)
 	if err != nil {
 		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
 		return
@@ -39,14 +39,30 @@ func (hdl *UserHandler) GetSingle(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": User})
 }
 
-func (hdl *UserHandler) Create(c *gin.Context) {
+func (hdl *UserHandler) Login(c *gin.Context) {
+	var input entity.LoginInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
+		return
+	}
+
+	User, err := hdl.userUc.Login(c, input)
+	if err != nil {
+		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": User})
+}
+
+func (hdl *UserHandler) Register(c *gin.Context) {
 	var input entity.UserInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
 		return
 	}
 
-	// Create User
+	// Register User
 	User := entity.User{
 		FullName: input.FullName,
 		NIK:      input.NIK,
@@ -55,13 +71,13 @@ func (hdl *UserHandler) Create(c *gin.Context) {
 		Password: input.Password,
 	}
 
-	err := hdl.productUc.CreateUser(c, User)
+	err := hdl.userUc.CreateUser(c, User)
 	if err != nil {
 		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"status": "product succesfully created"})
+	c.JSON(http.StatusOK, gin.H{"status": "user succesfully created"})
 }
 
 func (hdl *UserHandler) Update(c *gin.Context) {
@@ -80,20 +96,20 @@ func (hdl *UserHandler) Update(c *gin.Context) {
 		Password: input.Password,
 	}
 
-	err := hdl.productUc.UpdateUser(c, User)
+	err := hdl.userUc.UpdateUser(c, User)
 	if err != nil {
 		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"status": "product succesfully updated"})
+	c.JSON(http.StatusOK, gin.H{"status": "user succesfully updated"})
 }
 func (hdl *UserHandler) Delete(c *gin.Context) {
-	err := hdl.productUc.DeleteUser(c)
+	err := hdl.userUc.DeleteUser(c)
 	if err != nil {
 		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"status": "product succesfully deleted"})
+	c.JSON(http.StatusOK, gin.H{"status": "user succesfully deleted"})
 }
