@@ -45,7 +45,7 @@ func (r *repositoryUserVote) ChooseVotes(c *gin.Context) error {
 		vote := entity.UserVote{
 			UserID:   userId,
 			ReportID: reportId,
-			IsUpVote: nil,
+			IsUpVote: &isVoting,
 		}
 		if err := db.Create(&vote).Error; err != nil {
 			return errors.New("failed to create vote")
