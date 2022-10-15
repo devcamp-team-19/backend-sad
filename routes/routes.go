@@ -9,7 +9,7 @@ import (
 	"github.com/devcamp-team-19/backend-sad/handler"
 )
 
-func SetupRoutes(db *gorm.DB, userHdl handler.UserHandler) *gin.Engine {
+func SetupRoutes(db *gorm.DB, userHdl handler.UserHandler, commentHdl handler.CommentHandler) *gin.Engine {
 	r := gin.Default()
 	r.Use(func(c *gin.Context) {
 		c.Set("db", db)
@@ -28,6 +28,7 @@ func SetupRoutes(db *gorm.DB, userHdl handler.UserHandler) *gin.Engine {
 		apiV1.PUT("/users/:id", userHdl.Update)
 		apiV1.POST("/users", userHdl.Create)
 		apiV1.DELETE("/users/:id", userHdl.Delete)
+		apiV1.POST("/reports/:reportId", commentHdl.Create)
 	}
 
 	return r
