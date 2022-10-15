@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/devcamp-team-19/backend-sad/core/entity"
 	"github.com/devcamp-team-19/backend-sad/core/module"
 )
 
@@ -39,7 +40,22 @@ func (hdl *UserHandler) GetSingle(c *gin.Context) {
 }
 
 func (hdl *UserHandler) Create(c *gin.Context) {
-	err := hdl.productUc.CreateUser(c)
+	var input entity.UserInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
+		return
+	}
+
+	// Create User
+	User := entity.User{
+		FullName: input.FullName,
+		NIK:      input.NIK,
+		Email:    input.Email,
+		Address:  input.Address,
+		Password: input.Password,
+	}
+
+	err := hdl.productUc.CreateUser(c, User)
 	if err != nil {
 		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
 		return
@@ -49,7 +65,22 @@ func (hdl *UserHandler) Create(c *gin.Context) {
 }
 
 func (hdl *UserHandler) Update(c *gin.Context) {
-	err := hdl.productUc.UpdateUser(c)
+	var input entity.UserInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
+		return
+	}
+
+	// Update User
+	User := entity.User{
+		FullName: input.FullName,
+		NIK:      input.NIK,
+		Email:    input.Email,
+		Address:  input.Address,
+		Password: input.Password,
+	}
+
+	err := hdl.productUc.UpdateUser(c, User)
 	if err != nil {
 		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
 		return

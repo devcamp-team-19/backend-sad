@@ -18,7 +18,7 @@ func SetupRoutes(db *gorm.DB, userHdl handler.UserHandler, commentHdl handler.Co
 	r.Use(gin.Logger(), gin.Recovery())
 
 	r.GET("/health", func(ctx *gin.Context) {
-		ctx.String(http.StatusOK, "oks")
+		ctx.String(http.StatusOK, "okss")
 	})
 
 	apiV1 := r.Group("/api/v1")
