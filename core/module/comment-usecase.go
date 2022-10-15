@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/devcamp-team-19/backend-sad/core/entity"
 	"github.com/devcamp-team-19/backend-sad/core/repository"
 	"github.com/gin-gonic/gin"
 )
@@ -28,4 +29,13 @@ func (em *commentUsecase) CreateComment(c *gin.Context) error {
 		return fmt.Errorf("%w: %v", ErrUserNotFound, err)
 	}
 	return nil
+}
+
+func (em *commentUsecase) GetComments(c *gin.Context) ([]entity.Comment, error) {
+	data, err := em.commentRepo.FindAll(c)
+	if err != nil {
+		return nil, fmt.Errorf("%w: %v", ErrUserNotFound, err)
+	}
+
+	return data, nil
 }
