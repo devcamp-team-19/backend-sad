@@ -5,7 +5,6 @@ go 1.17
 require (
 	github.com/gin-gonic/gin v1.8.0
 	github.com/golang-jwt/jwt/v4 v4.4.2
-	github.com/jinzhu/gorm v1.9.16
 	github.com/joho/godotenv v1.4.0
 	gorm.io/gorm v1.24.0
 )
@@ -40,7 +39,6 @@ require (
 )
 
 require (
-	github.com/mattn/go-sqlite3 v1.14.15 // indirect
 	golang.org/x/crypto v0.0.0-20221012134737-56aed061732a
 	golang.org/x/text v0.3.8 // indirect
 	gorm.io/driver/postgres v1.4.4
