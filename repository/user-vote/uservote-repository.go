@@ -18,6 +18,7 @@ func New() repository_intf.UserVoteRepository {
 	return &repositoryUserVote{}
 }
 
+// TODO: belom pake auth
 func (r *repositoryUserVote) GetVotesInReport(c *gin.Context) (entity.Votes, error) {
 	var userVotes []entity.UserVote
 	var downvotes int64 = 0
@@ -57,8 +58,9 @@ func (r *repositoryUserVote) GetVotesInReport(c *gin.Context) (entity.Votes, err
 	return votes, nil
 }
 
+// TODO: belom pake auth
 func (r *repositoryUserVote) ChooseVotes(c *gin.Context) error {
-	var userId uint = 2 // dummy dulu, nanti isi ini pake jwt
+	var userId uint = 2 // TODO: dummy dulu, nanti isi ini pake jwt
 
 	query := c.Query("isVoting")
 	isVoting, err := strconv.ParseBool(query)
