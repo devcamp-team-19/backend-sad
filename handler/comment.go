@@ -26,3 +26,13 @@ func (hdl *CommentHandler) Create(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"status": "comment succesfully created"})
 }
+
+func (hdl *CommentHandler) GetAll(c *gin.Context) {
+	Comments, err := hdl.commentUc.GetComments(c)
+	if err != nil {
+		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": Comments})
+}
