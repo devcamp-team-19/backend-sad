@@ -29,7 +29,7 @@ services:
     image:
       010573/talent:latest
     depends_on:
-      - postgres
+      - database
     ports:
       - "8080:8080"
     networks:
