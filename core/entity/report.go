@@ -23,14 +23,15 @@ type ReportResp struct {
 	UserVotes   []UserVote `json:"userVotes"`
 	Comments    []Comment  `json:"comments"`
 	UserID      uint
-	FullNames   []string `json:"fullNames"`
-	EventTitle  string   `json:"eventTitle"`
-	Category    uint     `json:"category"`
-	ImageUrl    string   `json:"imageUrl"`
-	Description string   `json:"description"`
-	Longitude   string   `json:"longitude"`
-	Latitude    string   `json:"latitude"`
-	Radius      float64  `json:"radius"`
+	EventTitle  string  `json:"eventTitle"`
+	Category    uint    `json:"category"`
+	ImageUrl    string  `json:"imageUrl"`
+	Description string  `json:"description"`
+	Longitude   string  `json:"longitude"`
+	Latitude    string  `json:"latitude"`
+	Radius      float64 `json:"radius"`
+	UpVotes     int64   `json:"upVotes"`
+	DownVotes   int64   `json:"downVotes"`
 }
 
 type ReportInput struct {

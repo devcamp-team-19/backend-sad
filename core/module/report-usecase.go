@@ -12,7 +12,7 @@ import (
 
 type ReportUsecase interface {
 	GetReports(c *gin.Context) ([]entity.Report, error)
-	GetReport(c *gin.Context, reportId uint) (entity.Report, error)
+	GetReport(c *gin.Context, reportId uint) (entity.ReportResp, error)
 	CreateReport(c *gin.Context, user entity.Report) error
 	UpdateReport(c *gin.Context, user entity.Report) error
 	DeleteReport(c *gin.Context) error
@@ -41,13 +41,13 @@ func (r reportUsecase) GetReports(c *gin.Context) ([]entity.Report, error) {
 	return data, nil
 }
 
-func (r reportUsecase) GetReport(c *gin.Context, reportId uint) (entity.Report, error) {
+func (r reportUsecase) GetReport(c *gin.Context, reportId uint) (entity.ReportResp, error) {
 	data, err := r.reportRepo.FindSingle(c, reportId)
 	if err != nil {
 		if errors.Is(err, repository.ErrRecordUserNotFound) {
-			return entity.Report{}, fmt.Errorf("%w.", ErrRecordReportNotFound)
+			return entity.ReportResp{}, fmt.Errorf("%w.", ErrRecordReportNotFound)
 		}
-		return entity.Report{}, fmt.Errorf("%w: %v", ErrRecordReportNotFound, err)
+		return entity.ReportResp{}, fmt.Errorf("%w: %v", ErrRecordReportNotFound, err)
 	}
 
 	return data, nil
