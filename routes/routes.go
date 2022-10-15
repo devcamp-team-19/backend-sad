@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 
@@ -13,12 +15,21 @@ func SetupRoutes(db *gorm.DB, userHdl handler.UserHandler, commentHdl handler.Co
 		c.Set("db", db)
 	})
 
-	r.GET("/users", userHdl.GetAll)
-	r.GET("/users/:id", userHdl.GetSingle)
-	r.PUT("/users/:id", userHdl.Update)
-	r.POST("/users", userHdl.Create)
-	r.DELETE("/users/:id", userHdl.Delete)
+	r.Use(gin.Logger(), gin.Recovery())
 
-	r.POST("/reports/:reportId", commentHdl.Create)
+	r.GET("/health", func(ctx *gin.Context) {
+		ctx.String(http.StatusOK, "ok")
+	})
+
+	apiV1 := r.Group("/api/v1")
+	{
+		apiV1.GET("/users", userHdl.GetAll)
+		apiV1.GET("/users/:id", userHdl.GetSingle)
+		apiV1.PUT("/users/:id", userHdl.Update)
+		apiV1.POST("/users", userHdl.Create)
+		apiV1.DELETE("/users/:id", userHdl.Delete)
+		apiV1.POST("/reports/:reportId", commentHdl.Create)
+	}
+
 	return r
 }

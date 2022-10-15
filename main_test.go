@@ -5,8 +5,7 @@ import (
 )
 
 const (
-	apiURL    = "http://20.5.186.93/api/api/v1"
-	healthURL = "http://20.5.186.93/api/health"
+	healthURL = "http://20.70.234.83/health"
 )
 
 func hello() string {

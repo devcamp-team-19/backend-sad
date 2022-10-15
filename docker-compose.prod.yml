@@ -23,6 +23,17 @@ services:
       - MINIO_ROOT_PASSWORD=minio-talentstorage-321
     networks:
       - app-tier
+  server:
+    build:
+      context: .
+    image:
+      010573/talent:latest
+    depends_on:
+      - database
+    ports:
+      - "8080:8080"
+    networks:
+      - app-tier
 volumes:
   data:
 networks:
