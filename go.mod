@@ -5,6 +5,10 @@ go 1.17
 require (
 	github.com/gin-gonic/gin v1.8.0
 	github.com/golang-jwt/jwt/v4 v4.4.2
+<<<<<<< HEAD
+=======
+	github.com/google/uuid v1.3.0
+>>>>>>> 2525ce518c3d722c89c3a081ea450a66be851131
 	github.com/joho/godotenv v1.4.0
 	gorm.io/gorm v1.24.0
 )
@@ -24,7 +28,7 @@ require (
 	github.com/jackc/pgtype v1.12.0 // indirect
 	github.com/jackc/pgx/v4 v4.17.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
-	github.com/jinzhu/now v1.1.5 // indirect
+	github.com/jinzhu/now v1.1.4 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect

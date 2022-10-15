@@ -13,16 +13,6 @@ services:
       - data:/var/lib/postgresql/data
     networks:
       - app-tier
-  minio:
-    image: 'bitnami/minio:latest'
-    ports:
-      - '9000:9000'
-      - '9001:9001'
-    environment:
-      - MINIO_ROOT_USER=minio-talent
-      - MINIO_ROOT_PASSWORD=minio-talentstorage-321
-    networks:
-      - app-tier
 volumes:
   data:
 networks:

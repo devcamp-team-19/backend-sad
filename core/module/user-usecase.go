@@ -13,8 +13,9 @@ import (
 type UserUsecase interface {
 	GetUsers(c *gin.Context) ([]entity.User, error)
 	GetUser(c *gin.Context) (entity.User, error)
-	CreateUser(c *gin.Context) error
-	UpdateUser(c *gin.Context) error
+	Login(c *gin.Context, loginInput entity.LoginInput) (entity.Token, error)
+	CreateUser(c *gin.Context, user entity.User) error
+	UpdateUser(c *gin.Context, user entity.User) error
 	DeleteUser(c *gin.Context) error
 }
 
@@ -26,8 +27,6 @@ type userUsecase struct {
 func NewUserUsecase(repo repository.UserRepository) UserUsecase {
 	return &userUsecase{repo}
 }
-
-var ErrUserNotFound = errors.New("user error: ")
 
 func (em *userUsecase) GetUsers(c *gin.Context) ([]entity.User, error) {
 	data, err := em.userRepo.FindAll(c)
@@ -51,8 +50,42 @@ func (em *userUsecase) GetUser(c *gin.Context) (entity.User, error) {
 	return data, nil
 }
 
-func (em *userUsecase) CreateUser(c *gin.Context) error {
-	err := em.userRepo.Create(c)
+func (em *userUsecase) Login(c *gin.Context, loginInput entity.LoginInput) (entity.Token, error) {
+
+	authUser, err := em.userRepo.FindSingleByEmail(c, loginInput.Email)
+	if err != nil {
+		return entity.Token{}, fmt.Errorf("email not exists")
+	}
+
+	check := CheckPasswordHash(loginInput.Password, authUser.Password)
+	if !check {
+		return entity.Token{}, fmt.Errorf("username or password is incorrect")
+	}
+
+	validToken, err := GenerateJWT(loginInput.Email)
+	if err != nil {
+		return entity.Token{}, fmt.Errorf("invalid token")
+	}
+
+	var token entity.Token
+	token.Email = authUser.Email
+	token.TokenString = validToken
+	return token, nil
+}
+
+func (em *userUsecase) CreateUser(c *gin.Context, user entity.User) error {
+	_, err := em.userRepo.FindSingleByEmail(c, user.Email)
+	if err != repository.ErrRecordUserNotFound {
+		return fmt.Errorf("email is already exists")
+	}
+
+	hashedPass, err := GeneratehashPassword(user.Password)
+	if err != nil {
+		return fmt.Errorf("error in password hash")
+	}
+	user.Password = hashedPass
+
+	err = em.userRepo.Create(c, user)
 	if err != nil {
 		if errors.Is(err, repository.ErrRecordUserNotFound) {
 			return fmt.Errorf("%w.", ErrUserNotFound)
@@ -62,8 +95,8 @@ func (em *userUsecase) CreateUser(c *gin.Context) error {
 	return nil
 }
 
-func (em *userUsecase) UpdateUser(c *gin.Context) error {
-	err := em.userRepo.Update(c)
+func (em *userUsecase) UpdateUser(c *gin.Context, user entity.User) error {
+	err := em.userRepo.Update(c, user)
 	if err != nil {
 		if errors.Is(err, repository.ErrRecordUserNotFound) {
 			return fmt.Errorf("%w.", ErrUserNotFound)

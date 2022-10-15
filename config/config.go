@@ -11,7 +11,7 @@ import (
 )
 
 // Setup : initializing mysql database
-func Init() *gorm.DB {
+func InitDB() *gorm.DB {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -29,4 +29,14 @@ func Init() *gorm.DB {
 	}
 
 	return db
+}
+
+type Config struct {
+	Host string `yaml:"server_host"`
+}
+
+func InitConfig() Config {
+	var cfg Config
+	cfg.Host = os.Getenv("server_host")
+	return cfg
 }

@@ -17,12 +17,19 @@ type User struct {
 }
 
 type UserInput struct {
-	Reports   []ReportInput   `json:"reports"`
-	UserVotes []UserVoteInput `json:"userVotes"`
-	Comments  []CommentInput  `json:"comments"`
-	FullName  string          `json:"fullName"`
-	NIK       string          `json:"nik"`
-	Email     string          `json:"email"`
-	Address   string          `json:"address"`
-	Password  string          `json:"password"`
+	FullName string `json:"fullName"`
+	NIK      string `json:"nik"`
+	Email    string `json:"email"`
+	Address  string `json:"address"`
+	Password string `json:"password"`
+}
+
+type LoginInput struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type Token struct {
+	Email       string `json:"email"`
+	TokenString string `json:"token"`
 }

@@ -1,4 +1,8 @@
 .idea
 .air.toml
 tmp/
+<<<<<<< HEAD
 .env
+=======
+images/
+>>>>>>> 2525ce518c3d722c89c3a081ea450a66be851131

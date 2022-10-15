@@ -13,7 +13,8 @@ var ErrRecordUserNotFound = errors.New("record not found")
 type UserRepository interface {
 	FindAll(c *gin.Context) ([]entity.User, error)
 	FindSingle(c *gin.Context) (entity.User, error)
-	Create(c *gin.Context) error
-	Update(c *gin.Context) error
+	FindSingleByEmail(c *gin.Context, email string) (entity.User, error)
+	Create(c *gin.Context, user entity.User) error
+	Update(c *gin.Context, user entity.User) error
 	Delete(c *gin.Context) error
 }
