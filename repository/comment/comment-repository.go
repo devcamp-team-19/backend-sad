@@ -65,5 +65,8 @@ func (r *repositoryComment) FindAll(c *gin.Context) ([]entity.Comment, error) {
 	}
 
 	db.Raw("SELECT * FROM comments WHERE report_id = ?", reportId).Scan(&comments)
+	if comments == nil {
+		return nil, errors.New("comments not found")
+	}
 	return comments, nil
 }
