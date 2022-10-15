@@ -36,13 +36,13 @@ func (r *repositoryComment) Create(c *gin.Context) error {
 		return errors.New("failed to parse db to gorm")
 	}
 
-	Comment := entity.Comment{
+	comment := entity.Comment{
 		UserID:      userId,
 		ReportID:    reportId,
 		Description: input.Description,
 	}
 
-	if err := db.Create(&Comment).Error; err != nil {
+	if err := db.Create(&comment).Error; err != nil {
 		return errors.New("failed to create comment")
 	}
 
@@ -65,12 +65,5 @@ func (r *repositoryComment) FindAll(c *gin.Context) ([]entity.Comment, error) {
 	}
 
 	db.Raw("SELECT * FROM comments WHERE report_id = ?", reportId).Scan(&comments)
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, repository_intf.ErrRecordCommentNotFound
-		}
-		return nil, err
-	}
-
 	return comments, nil
 }
