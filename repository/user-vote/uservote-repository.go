@@ -58,25 +58,49 @@ func (r *repositoryUserVote) ChooseVotes(c *gin.Context) error {
 				return errors.New("failed convert from vote true to nil")
 			}
 			user.IsUpVote = nil
-			db.Save(&user)
+
+			err = db.Save(&user).Error
+			if err != nil {
+				return errors.New("failed save from vote true to nil")
+			}
 
 		} else if *user.IsUpVote && !isVoting {
 			// update uservotes ke false
 			err := db.First(&user).Error
+			if err != nil {
+				return errors.New("failed convert from vote true to nil")
+			}
 			*user.IsUpVote = false
+
 			err = db.Save(&user).Error
+			if err != nil {
+				return errors.New("failed save from vote true to nil")
+			}
 
 		} else if !*user.IsUpVote && !isVoting {
 			// update uservotes jadi nill
-			db.First(&user)
+			err := db.First(&user).Error
+			if err != nil {
+				return errors.New("failed convert from vote false to nil")
+			}
+
 			user.IsUpVote = nil
-			db.Save(&user)
+			err = db.Save(&user).Error
+			if err != nil {
+				return errors.New("failed save from vote true to nil")
+			}
 
 		} else if !*user.IsUpVote && isVoting {
 			// update uservotes ke true
-			db.First(&user)
+			err := db.First(&user).Error
+			if err != nil {
+				return errors.New("failed convert from vote false to true")
+			}
 			*user.IsUpVote = true
 			db.Save(&user)
+			if err != nil {
+				return errors.New("failed convert from vote true to nil")
+			}
 		}
 	}
 
