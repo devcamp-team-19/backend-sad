@@ -52,13 +52,31 @@ func (r *repositoryUserVote) ChooseVotes(c *gin.Context) error {
 		}
 	} else {
 		if *user.IsUpVote && isVoting {
-			// update uservotes jadi nill
+			// update uservotes ke nil
+			err := db.First(&user).Error
+			if err != nil {
+				return errors.New("failed convert from vote true to nil")
+			}
+			user.IsUpVote = nil
+			db.Save(&user)
+
 		} else if *user.IsUpVote && !isVoting {
 			// update uservotes ke false
+			err := db.First(&user).Error
+			*user.IsUpVote = false
+			err = db.Save(&user).Error
+
 		} else if !*user.IsUpVote && !isVoting {
-			// update uservotes ke nill
+			// update uservotes jadi nill
+			db.First(&user)
+			user.IsUpVote = nil
+			db.Save(&user)
+
 		} else if !*user.IsUpVote && isVoting {
 			// update uservotes ke true
+			db.First(&user)
+			*user.IsUpVote = true
+			db.Save(&user)
 		}
 	}
 
