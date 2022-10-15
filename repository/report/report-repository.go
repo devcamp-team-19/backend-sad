@@ -23,7 +23,7 @@ func (r repository) FindAll(c *gin.Context) ([]entity.Report, error) {
 		return nil, errors.New("failed to parse db to gorm")
 	}
 
-	if err := db.Model(&[]entity.Report{}).Preload("Comments").Preload("UserVotes").First(&reports).Error; err != nil {
+	if err := db.Model(&[]entity.Report{}).Preload("Comments").Preload("UserVotes").Find(&reports).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, repository_intf.ErrRecordReportNotFound
 		}
