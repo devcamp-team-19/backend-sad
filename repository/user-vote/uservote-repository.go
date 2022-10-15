@@ -5,10 +5,11 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/devcamp-team-19/backend-sad/core/entity"
-	repository_intf "github.com/devcamp-team-19/backend-sad/core/repository"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+
+	"github.com/devcamp-team-19/backend-sad/core/entity"
+	repository_intf "github.com/devcamp-team-19/backend-sad/core/repository"
 )
 
 type repositoryUserVote struct {
@@ -60,7 +61,7 @@ func (r *repositoryUserVote) GetVotesInReport(c *gin.Context) (entity.Votes, err
 
 // TODO: belom pake auth
 func (r *repositoryUserVote) ChooseVotes(c *gin.Context) error {
-	var userId uint = 2 // TODO: dummy dulu, nanti isi ini pake jwt
+	var userId uint = 1 // TODO: dummy dulu, nanti isi ini pake jwt
 
 	query := c.Query("isVoting")
 	isVoting, err := strconv.ParseBool(query)

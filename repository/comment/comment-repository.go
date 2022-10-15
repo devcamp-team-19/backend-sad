@@ -4,10 +4,11 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/devcamp-team-19/backend-sad/core/entity"
-	repository_intf "github.com/devcamp-team-19/backend-sad/core/repository"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+
+	"github.com/devcamp-team-19/backend-sad/core/entity"
+	repository_intf "github.com/devcamp-team-19/backend-sad/core/repository"
 )
 
 type repositoryComment struct {
@@ -20,7 +21,7 @@ func New() repository_intf.CommentRepository {
 // TODO: belom pake auth
 func (r *repositoryComment) Create(c *gin.Context) error {
 	var input entity.CommentInput
-	var userId uint = 2 // TODO: dummy dulu, nanti isi ini pake jwt
+	var userId uint = 1 // TODO: dummy dulu, nanti isi ini pake jwt
 
 	paramsId, err := strconv.ParseInt(c.Params.ByName("reportId"), 32, 32)
 	if err != nil {

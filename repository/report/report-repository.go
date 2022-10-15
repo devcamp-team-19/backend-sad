@@ -23,8 +23,7 @@ func (r repository) FindAll(c *gin.Context) ([]entity.Report, error) {
 		return nil, errors.New("failed to parse db to gorm")
 	}
 
-	err := db.Find(&reports).Error
-	if err != nil {
+	if err := db.Model(&[]entity.Report{}).Preload("Comments").Preload("UserVotes").First(&reports).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, repository_intf.ErrRecordReportNotFound
 		}
@@ -35,18 +34,18 @@ func (r repository) FindAll(c *gin.Context) ([]entity.Report, error) {
 }
 
 func (r repository) FindSingle(c *gin.Context, reportID uint) (entity.Report, error) {
-	user := entity.Report{}
+	report := entity.Report{}
 
 	db, ok := c.MustGet("db").(*gorm.DB)
 	if !ok {
 		return entity.Report{}, errors.New("failed to parse db to gorm")
 	}
 
-	if err := db.Where("id = ?", reportID).First(&user).Error; err != nil {
+	if err := db.Model(&entity.Report{}).Preload("Comments").Preload("UserVotes").Where("id = ?", reportID).First(&report).Error; err != nil {
 		return entity.Report{}, repository_intf.ErrRecordUserNotFound
 	}
 
-	return user, nil
+	return report, nil
 }
 
 func (r repository) Create(c *gin.Context, report entity.Report) (entity.Report, error) {
