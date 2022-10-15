@@ -2,6 +2,7 @@ package uservoterepository
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"strconv"
 
@@ -39,8 +40,10 @@ func (r *repositoryUserVote) ChooseVotes(c *gin.Context) error {
 		return errors.New("failed to parse db to gorm")
 	}
 
-	user := entity.UserVote{}
-	dbRresult := db.Where("user_id = ? AND report_id = ?", userId, reportId).First(&user)
+	userVote := entity.UserVote{}
+	dbRresult := db.Where("user_id = ? AND report_id = ?", userId, reportId).First(&userVote)
+
+	// when user never vote the report that we addresed
 	if errors.Is(dbRresult.Error, gorm.ErrRecordNotFound) {
 		vote := entity.UserVote{
 			UserID:   userId,
@@ -51,55 +54,76 @@ func (r *repositoryUserVote) ChooseVotes(c *gin.Context) error {
 			return errors.New("failed to create vote")
 		}
 	} else {
-		if *user.IsUpVote && isVoting {
-			// update uservotes ke nil
-			err := db.First(&user).Error
-			if err != nil {
-				return errors.New("failed convert from vote true to nil")
+		// nil to isVoting
+		if userVote.IsUpVote == nil {
+			fmt.Println("Hello")
+			if !isVoting {
+				db.Raw(` 
+				UPDATE user_votes
+				SET is_up_vote = FALSE
+				WHERE user_id = ?;`, userId).Scan(&userVote)
+			} else {
+				db.Raw(` 
+				UPDATE user_votes
+				SET is_up_vote = TRUE
+				WHERE user_id = ?;`, userId).Scan(&userVote)
 			}
-			user.IsUpVote = nil
+		} else {
+			if *userVote.IsUpVote && isVoting {
+				// update uservotes ke nil
+				err := db.First(&userVote).Error
+				if err != nil {
+					return errors.New("failed convert from vote true to nil")
+				}
 
-			err = db.Save(&user).Error
-			if err != nil {
-				return errors.New("failed save from vote true to nil")
-			}
+				userVote.IsUpVote = nil
 
-		} else if *user.IsUpVote && !isVoting {
-			// update uservotes ke false
-			err := db.First(&user).Error
-			if err != nil {
-				return errors.New("failed convert from vote true to nil")
-			}
-			*user.IsUpVote = false
+				err = db.Save(&userVote).Error
+				if err != nil {
+					return errors.New("failed save from vote true to nil")
+				}
 
-			err = db.Save(&user).Error
-			if err != nil {
-				return errors.New("failed save from vote true to nil")
-			}
+			} else if *userVote.IsUpVote && !isVoting {
+				// update uservotes ke false
+				err := db.First(&userVote).Error
+				if err != nil {
+					return errors.New("failed convert from vote true to nil")
+				}
 
-		} else if !*user.IsUpVote && !isVoting {
-			// update uservotes jadi nill
-			err := db.First(&user).Error
-			if err != nil {
-				return errors.New("failed convert from vote false to nil")
-			}
+				*userVote.IsUpVote = false
 
-			user.IsUpVote = nil
-			err = db.Save(&user).Error
-			if err != nil {
-				return errors.New("failed save from vote true to nil")
-			}
+				err = db.Save(&userVote).Error
+				if err != nil {
+					return errors.New("failed save from vote true to nil")
+				}
 
-		} else if !*user.IsUpVote && isVoting {
-			// update uservotes ke true
-			err := db.First(&user).Error
-			if err != nil {
-				return errors.New("failed convert from vote false to true")
-			}
-			*user.IsUpVote = true
-			db.Save(&user)
-			if err != nil {
-				return errors.New("failed convert from vote true to nil")
+			} else if !*userVote.IsUpVote && !isVoting {
+				// update uservotes jadi nill
+				err := db.First(&userVote).Error
+				if err != nil {
+					return errors.New("failed convert from vote false to nil")
+				}
+
+				userVote.IsUpVote = nil
+
+				err = db.Save(&userVote).Error
+				if err != nil {
+					return errors.New("failed save from vote true to nil")
+				}
+
+			} else if !*userVote.IsUpVote && isVoting {
+				// update uservotes ke true
+				err := db.First(&userVote).Error
+				if err != nil {
+					return errors.New("failed convert from vote false to true")
+				}
+
+				*userVote.IsUpVote = true
+
+				db.Save(&userVote)
+				if err != nil {
+					return errors.New("failed convert from vote true to nil")
+				}
 			}
 		}
 	}
