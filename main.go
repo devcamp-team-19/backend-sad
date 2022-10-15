@@ -14,7 +14,8 @@ import (
 
 func main() {
 
-	db := config.Init()
+	db := config.InitDB()
+	cfg := config.InitConfig()
 	db.AutoMigrate(&entity.User{}, &entity.Report{}, &entity.UserVote{}, &entity.Comment{}, &entity.File{})
 
 	userRepo := userrepository.New()
@@ -30,7 +31,7 @@ func main() {
 	commentHdl := handler.NewCommentHandler(commentUc)
 	fileHdl := handler.NewFileHandler(fileUc)
 
-	r := routes.SetupRoutes(db, *userHdl, *commentHdl, *fileHdl)
+	r := routes.SetupRoutes(db, cfg, *userHdl, *commentHdl, *fileHdl)
 
 	r.Run(":8080")
 }

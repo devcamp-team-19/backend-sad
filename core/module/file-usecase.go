@@ -58,6 +58,11 @@ func (fuc *fileUsecase) GetFiles(c *gin.Context) ([]entity.File, error) {
 
 func (fuc *fileUsecase) UploadFileToStorage(c *gin.Context, ef entity.File, buffer multipart.File) (entity.File, error) {
 
+	hostName, ok := c.MustGet("host").(string)
+	if !ok {
+		return entity.File{}, errors.New("failed to parse hostname to string")
+	}
+
 	newID, err := uuid.NewUUID()
 	if err != nil {
 		return entity.File{}, err
@@ -74,7 +79,7 @@ func (fuc *fileUsecase) UploadFileToStorage(c *gin.Context, ef entity.File, buff
 		Filename:     newID.String() + ef.Extension,
 		OriginalName: ef.OriginalName,
 		Mimetype:     ef.Mimetype,
-		Url:          "http://localhost:8080" + "/file/static/" + date + "/" + newID.String() + ef.Extension,
+		Url:          hostName + "/file/static/" + date + "/" + newID.String() + ef.Extension,
 		Size:         ef.Size,
 		Extension:    ef.Extension,
 	}
