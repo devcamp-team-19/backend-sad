@@ -1,4 +1,4 @@
-module github.com/devcamp-team-19/backend-sad
+module github.com/fajartd02/mygallery
 
 go 1.17
 

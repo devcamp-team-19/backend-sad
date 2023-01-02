@@ -6,14 +6,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 
-	"github.com/devcamp-team-19/backend-sad/config"
-	"github.com/devcamp-team-19/backend-sad/core/module"
-	"github.com/devcamp-team-19/backend-sad/handler"
+	"github.com/fajartd02/mygallery/core/module"
+	"github.com/fajartd02/mygallery/handler"
 )
 
 func SetupRoutes(
 	db *gorm.DB,
-	cfg config.Config,
+	// cfg config.Config,
 	userHdl handler.UserHandler,
 	commentHdl handler.CommentHandler,
 	fileHdl handler.FileHandler,
@@ -23,7 +22,7 @@ func SetupRoutes(
 	r := gin.Default()
 	r.Use(func(c *gin.Context) {
 		c.Set("db", db)
-		c.Set("host", cfg.Host)
+		// c.Set("host", cfg.Host)
 	})
 
 	r.Use(gin.Logger(), gin.Recovery())

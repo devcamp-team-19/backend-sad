@@ -8,7 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/devcamp-team-19/backend-sad/core/entity"
+	"github.com/fajartd02/mygallery/core/entity"
 )
 
 func parseFileInput(c *gin.Context) (entity.File, multipart.File, error) {

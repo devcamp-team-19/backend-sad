@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/devcamp-team-19/backend-sad/core/entity"
+	"github.com/fajartd02/mygallery/core/entity"
 )
 
 var ErrRecordFileNotFound = errors.New("record not found")

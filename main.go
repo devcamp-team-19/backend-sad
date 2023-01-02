@@ -1,22 +1,22 @@
 package main
 
 import (
-	"github.com/devcamp-team-19/backend-sad/config"
-	"github.com/devcamp-team-19/backend-sad/core/entity"
-	"github.com/devcamp-team-19/backend-sad/core/module"
-	"github.com/devcamp-team-19/backend-sad/handler"
-	commentrepository "github.com/devcamp-team-19/backend-sad/repository/comment"
-	filerepository "github.com/devcamp-team-19/backend-sad/repository/file"
-	reportrepository "github.com/devcamp-team-19/backend-sad/repository/report"
-	userrepository "github.com/devcamp-team-19/backend-sad/repository/user"
-	uservoterepository "github.com/devcamp-team-19/backend-sad/repository/user-vote"
-	"github.com/devcamp-team-19/backend-sad/routes"
+	"github.com/fajartd02/mygallery/config"
+	"github.com/fajartd02/mygallery/core/entity"
+	"github.com/fajartd02/mygallery/core/module"
+	"github.com/fajartd02/mygallery/handler"
+	commentrepository "github.com/fajartd02/mygallery/repository/comment"
+	filerepository "github.com/fajartd02/mygallery/repository/file"
+	reportrepository "github.com/fajartd02/mygallery/repository/report"
+	userrepository "github.com/fajartd02/mygallery/repository/user"
+	uservoterepository "github.com/fajartd02/mygallery/repository/user-vote"
+	"github.com/fajartd02/mygallery/routes"
 )
 
 func main() {
 
 	db := config.InitDB()
-	cfg := config.InitConfig()
+	// cfg := config.InitConfig()
 	db.AutoMigrate(&entity.User{}, &entity.Report{}, &entity.UserVote{}, &entity.Comment{}, &entity.File{})
 
 	userRepo := userrepository.New()
@@ -37,7 +37,7 @@ func main() {
 	fileHdl := handler.NewFileHandler(fileUc)
 	reportHdl := handler.NewReportHandler(reportUc)
 
-	r := routes.SetupRoutes(db, cfg, *userHdl, *commentHdl, *fileHdl, *userVoteHdl, *reportHdl)
+	r := routes.SetupRoutes(db, *userHdl, *commentHdl, *fileHdl, *userVoteHdl, *reportHdl)
 
 	r.Run(":8080")
 }

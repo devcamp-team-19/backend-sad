@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/devcamp-team-19/backend-sad/core/module"
+	"github.com/fajartd02/mygallery/core/module"
 	"github.com/gin-gonic/gin"
 )
 

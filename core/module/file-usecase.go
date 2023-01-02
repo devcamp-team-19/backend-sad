@@ -12,8 +12,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 
-	"github.com/devcamp-team-19/backend-sad/core/entity"
-	"github.com/devcamp-team-19/backend-sad/core/repository"
+	"github.com/fajartd02/mygallery/core/entity"
+	"github.com/fajartd02/mygallery/core/repository"
 )
 
 var ErrBucketNameNotFound = errors.New("bucket name is not defined")

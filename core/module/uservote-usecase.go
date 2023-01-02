@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/devcamp-team-19/backend-sad/core/entity"
-	"github.com/devcamp-team-19/backend-sad/core/repository"
+	"github.com/fajartd02/mygallery/core/entity"
+	"github.com/fajartd02/mygallery/core/repository"
 	"github.com/gin-gonic/gin"
 )
 

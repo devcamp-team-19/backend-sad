@@ -39,12 +39,12 @@ func InitDB() *gorm.DB {
 	return db
 }
 
-type Config struct {
-	Host string `yaml:"server_host"`
-}
+// type Config struct {
+// 	Host string `yaml:"server_host"`
+// }
 
-func InitConfig() Config {
-	var cfg Config
-	cfg.Host = os.Getenv("server_host")
-	return cfg
-}
+// func InitConfig() Config {
+// 	var cfg Config
+// 	cfg.Host = os.Getenv("server_host")
+// 	return cfg
+// }

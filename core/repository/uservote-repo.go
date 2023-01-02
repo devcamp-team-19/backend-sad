@@ -3,7 +3,7 @@ package repository
 import (
 	"errors"
 
-	"github.com/devcamp-team-19/backend-sad/core/entity"
+	"github.com/fajartd02/mygallery/core/entity"
 	"github.com/gin-gonic/gin"
 )
 

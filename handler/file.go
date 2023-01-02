@@ -6,8 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/devcamp-team-19/backend-sad/core/entity"
-	"github.com/devcamp-team-19/backend-sad/core/module"
+	"github.com/fajartd02/mygallery/core/entity"
+	"github.com/fajartd02/mygallery/core/module"
 )
 
 type FileHandler struct {

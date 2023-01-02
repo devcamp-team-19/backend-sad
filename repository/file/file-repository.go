@@ -6,9 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 
-	repository_intf "github.com/devcamp-team-19/backend-sad/core/repository"
+	repository_intf "github.com/fajartd02/mygallery/core/repository"
 
-	"github.com/devcamp-team-19/backend-sad/core/entity"
+	"github.com/fajartd02/mygallery/core/entity"
 )
 
 var ErrDBNotFound = errors.New("repo: db not found")
